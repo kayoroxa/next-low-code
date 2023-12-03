@@ -1,0 +1,41 @@
+z.boolean()
+    .describe('Accept terms and conditions.')
+    .refine(value => value, {
+      message: 'You must accept the terms and conditions.',
+      path: ['acceptTerms'],
+    }),
+
+
+/////////////// NUMBER ////////////
+
+z.coerce.number({
+  invalid_type_error: 'Favourite number must be a number.',
+})
+.min(1, {
+  message: 'Favourite number must be at least 1.',
+})
+.max(10, {
+  message: 'Favourite number must be at most 10.',
+})
+.default(5) // You can set a default value
+.optional()
+
+
+
+
+
+
+////////////// string ///////////
+
+
+z
+.string({
+  required_error: 'Password is required.',
+})
+// Use the "describe" method to set the label
+// If no label is set, the field name will be used
+// and un-camel-cased
+.describe('Your secure password')
+.min(8, {
+  message: 'Password must be at least 8 characters.',
+})

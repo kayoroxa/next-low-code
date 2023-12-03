@@ -1,0 +1,18 @@
+{
+  "files.exclude": {
+    "**/node_modules": false,
+    "**/postcss.config.js": false,
+    "**/tsconfig.json": false,
+    ".next": false,
+    ".eslintrc.json": false,
+    ".gitignore": false,
+    "next-env.d.ts": false,
+    "next.config.js": false,
+    "package-lock.json": false,
+    "package.json": false,
+    "tailwind.config.ts": false,
+    "prisma": false,
+    "public": false
+  },
+  "hide-files.files": []
+}
