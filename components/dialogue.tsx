@@ -23,6 +23,7 @@ export function DialogCloseButton({
           <DialogTitle>Share link</DialogTitle>
           <DialogDescription>
             Anyone who has this link will be able to view this.
+            <Button type="submit">Confirm</Button>
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center space-x-2">{children}</div>
