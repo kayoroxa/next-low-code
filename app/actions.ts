@@ -1,38 +1,54 @@
 'use server'
-import axios from 'axios'
 
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { Prisma } from '@prisma/client'
+import { revalidateTag } from 'next/cache'
 
-export async function addUser(newUser) {
-  console.log(newUser)
+export async function serverAdd(type: Prisma.ModelName, newPayload: any) {
+  if (!type) throw new Error('Type is required')
 
-  fetch('http://localhost:3000/api/users', {
+  await fetch(`http://localhost:3000/api/${type.toLowerCase()}s`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     cache: 'no-store',
-    body: JSON.stringify(newUser),
+    body: JSON.stringify(newPayload),
   })
 
-  revalidateTag('users')
+  revalidateTag(type.toLowerCase() + 's')
 }
 
-export async function deleteAlls() {
-  await axios.delete(`http://localhost:3000/api/users`)
-  revalidatePath('/')
-}
+export async function serverDelete(
+  type: Prisma.ModelName,
+  id: number | string
+) {
+  if (!type) throw new Error('Type is required')
 
-export async function create(formData: FormData) {
-  'use server'
-  console.log(formData)
-
-  const number = formData.get('number')
-
-  await fetch(`http://localhost:3000/api/users/${number}`, {
+  await fetch(`http://localhost:3000/api/${type.toLowerCase()}s/${id}`, {
     method: 'DELETE',
     cache: 'no-store',
-    body: formData,
   })
-  revalidateTag('mi')
+
+  revalidateTag(type.toLowerCase() + 's')
+}
+
+export async function serverEdit(
+  type: Prisma.ModelName,
+  newPayload: any,
+  id: number | string
+) {
+  if (!type) throw new Error('Type is required')
+
+  await fetch(`http://localhost:3000/api/${type.toLowerCase()}s/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: 'no-store',
+    body: JSON.stringify(newPayload),
+  })
+
+  console.log(type.toLowerCase() + 's')
+
+  revalidateTag(type.toLowerCase() + 's')
 }
