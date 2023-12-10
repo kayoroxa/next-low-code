@@ -2,6 +2,7 @@ import { addUser } from '@/app/actions'
 import CardContainer from '@/components/cardContainer'
 import MyFormModal from '@/components/formModal'
 import { Button } from '@/components/ui/button'
+import { propsSchemaFormUser } from '@/types/Zuser'
 
 export default async function Home() {
   const response = await fetch('http://localhost:3000/api/users', {
@@ -38,7 +39,7 @@ export default async function Home() {
         ))}
       </div>
 
-      <MyFormModal onSubmit={addUser}>
+      <MyFormModal onSubmit={addUser} propsSchema={propsSchemaFormUser}>
         <Button type="button">Create new user</Button>
       </MyFormModal>
 
