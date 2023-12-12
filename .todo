@@ -1,0 +1,1 @@
+☐ pull request, replace -> "format(date, 'PPP')" -> "format(new Date(date), 'PPP')"

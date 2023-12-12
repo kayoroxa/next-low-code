@@ -22,6 +22,7 @@ type FormModalProps = {
     fieldConfig: FieldConfig<any> | undefined
   }
   children: React.ReactNode
+  model: Prisma.ModelName
 } & (
   | {
       onSubmit: OnEdit
@@ -50,7 +51,7 @@ function isEmptyObject(obj: any) {
 }
 
 export default function FormModal(p: FormModalProps) {
-  const { onSubmit, children, propsSchema, method } = p
+  const { onSubmit, children, propsSchema, method, model } = p
   const id = method === 'update' ? p.id : undefined
 
   const [open, setOpen] = useState(false)
@@ -65,11 +66,11 @@ export default function FormModal(p: FormModalProps) {
     }
     if (method === 'update' && id) {
       ;(async () => {
-        const data = await fetchData('User', id)
+        const data = await fetchData(model, id)
         setValues(data)
       })()
     }
-  }, [method, id, open])
+  }, [method, id, open, model])
 
   if (!propsSchema) return null
   return (
@@ -85,9 +86,9 @@ export default function FormModal(p: FormModalProps) {
           <AutoForm
             onSubmit={props => {
               if (method === 'create') {
-                onSubmit('User', props)
+                onSubmit(model, props)
               } else if (method === 'update' && id) {
-                onSubmit('User', props, id)
+                onSubmit(model, props, id)
               }
               setTimeout(async () => {
                 setOpen(false)

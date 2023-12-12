@@ -5,7 +5,7 @@ import { revalidateTag } from 'next/cache'
 
 export async function serverAdd(type: Prisma.ModelName, newPayload: any) {
   if (!type) throw new Error('Type is required')
-
+  console.log(newPayload)
   await fetch(`http://localhost:3000/api/${type.toLowerCase()}s`, {
     method: 'POST',
     headers: {
@@ -47,8 +47,6 @@ export async function serverEdit(
     cache: 'no-store',
     body: JSON.stringify(newPayload),
   })
-
-  console.log(type.toLowerCase() + 's')
 
   revalidateTag(type.toLowerCase() + 's')
 }
