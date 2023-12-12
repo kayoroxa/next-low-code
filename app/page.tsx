@@ -1,9 +1,9 @@
-import { serverAdd, serverDelete, serverEdit } from '@/app/actions'
+import ButtonFormCreate from '@/components/buttonForm'
 import CardContainer from '@/components/cardContainer'
-import MyFormModal from '@/components/formModal'
-import { Button } from '@/components/ui/button'
 import { propsSchemaFormUser } from '@/types/Zuser'
+
 import { User } from '@prisma/client'
+// import * as schemas from '../prisma/generated/zod/index'
 
 export default async function Home() {
   const response = await fetch('http://localhost:3000/api/users', {
@@ -13,16 +13,22 @@ export default async function Home() {
 
   const users = await response.json()
 
+  const model = 'User'
+
+  // const propsSchemaFormUser = {
+  //   formSchema: schemas[`UserSchema`],
+  //   fieldConfig: {},
+  // }
+
   return (
     <main className="flex min-h-screen flex-col items-center p-24 gap-4">
       <div className="flex w-full gap-2 flex-wrap">
         {users.map((user: User) => (
           <CardContainer
             key={user.id}
-            onDelete={serverDelete}
-            onEdit={serverEdit}
             id={user.id}
-            data={user}
+            model={model}
+            propsSchema={propsSchemaFormUser}
           >
             <p key={user.id} className="truncate">
               {user.name}
@@ -31,15 +37,9 @@ export default async function Home() {
         ))}
       </div>
 
-      <MyFormModal
-        onSubmit={serverAdd}
-        propsSchema={propsSchemaFormUser}
-        method="create"
-      >
-        <Button type="button">Create new user</Button>
-      </MyFormModal>
-
-      {/* <DialogCloseButton></DialogCloseButton> */}
+      <ButtonFormCreate model={model} propsSchema={propsSchemaFormUser}>
+        Create new user
+      </ButtonFormCreate>
     </main>
   )
 }
