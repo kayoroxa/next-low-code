@@ -3,6 +3,20 @@
 import { Prisma } from '@prisma/client'
 import { revalidateTag } from 'next/cache'
 
+export async function serverGet(type: Prisma.ModelName) {
+  if (!type) throw new Error('Type is required')
+
+  const response = await fetch(
+    `http://localhost:3000/api/${type.toLowerCase()}s`,
+    {
+      cache: 'no-store',
+      next: { tags: [type.toLowerCase() + 's'] },
+    }
+  )
+
+  return await response.json()
+}
+
 export async function serverAdd(type: Prisma.ModelName, newPayload: any) {
   if (!type) throw new Error('Type is required')
   console.log(newPayload)

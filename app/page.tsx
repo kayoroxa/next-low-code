@@ -2,22 +2,13 @@ import ButtonFormCreate from '@/components/buttonForm'
 import CardContainer from '@/components/cardContainer'
 
 import { User } from '@prisma/client'
+import { serverGet } from './actions'
 // import * as schemas from '../prisma/generated/zod/index'
 
 export default async function Home() {
-  const response = await fetch('http://localhost:3000/api/users', {
-    cache: 'no-store',
-    next: { tags: ['users'] },
-  })
-
-  const users = await response.json()
+  const users = await serverGet('User')
 
   const model = 'User'
-
-  // const propsSchemaFormUser = {
-  //   formSchema: schemas[`UserSchema`],
-  //   fieldConfig: {},
-  // }
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24 gap-4">

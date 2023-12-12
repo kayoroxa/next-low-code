@@ -1,27 +1,18 @@
 import ButtonFormCreate from '@/components/buttonForm'
 import CardContainer from '@/components/cardContainer'
-import { propsSchemaFormTransaction } from '@/types/Ztransation'
 
 import { Transaction } from '@prisma/client'
+import { serverGet } from '../actions'
 
 export default async function Home() {
-  const response = await fetch('http://localhost:3000/api/transactions', {
-    cache: 'no-store',
-    next: { tags: ['transactions'] },
-  })
-
-  const transactions = await response.json()
+  const model = 'Transaction'
+  const transactions = await serverGet(model)
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24 gap-4">
       <div className="flex w-full gap-2 flex-wrap">
         {transactions.map((transaction: Transaction) => (
-          <CardContainer
-            key={transaction.id}
-            id={transaction.id}
-            model="Transaction"
-            propsSchema={propsSchemaFormTransaction}
-          >
+          <CardContainer key={transaction.id} id={transaction.id} model={model}>
             {/* personalize seu card */}
             <div className="flex flex-col">
               <header>
@@ -45,12 +36,7 @@ export default async function Home() {
         ))}
       </div>
 
-      <ButtonFormCreate
-        model="Transaction"
-        propsSchema={propsSchemaFormTransaction}
-      >
-        Create new Transaction
-      </ButtonFormCreate>
+      <ButtonFormCreate model={model}>Create new Transaction</ButtonFormCreate>
     </main>
   )
 }
