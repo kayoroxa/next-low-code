@@ -1,11 +1,10 @@
 'use client'
 
+import propsSchemaFormModels from '@/types/schemas'
 import { Prisma } from '@prisma/client'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import AutoForm, { AutoFormSubmit } from './ui/auto-form'
-import { FieldConfig } from './ui/auto-form/types'
-import { ZodObjectOrWrapped } from './ui/auto-form/utils'
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog'
 
 export type OnEdit = (
@@ -17,10 +16,10 @@ export type OnEdit = (
 export type OnCreate = (type: Prisma.ModelName, values: any) => void
 
 type FormModalProps = {
-  propsSchema: {
-    formSchema: ZodObjectOrWrapped
-    fieldConfig: FieldConfig<any> | undefined
-  }
+  // propsSchema?: {
+  //   formSchema: ZodObjectOrWrapped
+  //   fieldConfig: FieldConfig<any> | undefined
+  // }
   children: React.ReactNode
   model: Prisma.ModelName
 } & (
@@ -51,14 +50,15 @@ function isEmptyObject(obj: any) {
 }
 
 export default function FormModal(p: FormModalProps) {
-  const { onSubmit, children, propsSchema, method, model } = p
+  const { onSubmit, children, method, model } = p
+  const propsSchema = propsSchemaFormModels[model]
   const id = method === 'update' ? p.id : undefined
 
   const [open, setOpen] = useState(false)
 
-  const [values, setValues] = useState<z.infer<typeof propsSchema.formSchema>>(
-    {}
-  )
+  const [values, setValues] = useState<
+    z.infer<typeof propsSchema.formSchema> | {}
+  >({})
 
   useEffect(() => {
     if (method === 'create') {

@@ -5,9 +5,6 @@ import MyFormModal from '@/components/formModal'
 import { cn } from '@/lib/utils'
 import { Prisma } from '@prisma/client'
 import { Pencil, Trash2 } from 'lucide-react'
-import { useState } from 'react'
-import { FieldConfig } from './ui/auto-form/types'
-import { ZodObjectOrWrapped } from './ui/auto-form/utils'
 
 type OnDelete = (type: Prisma.ModelName, id: number | string) => void
 
@@ -15,10 +12,7 @@ interface Props {
   children: React.ReactNode
   id: number | string
   model: Prisma.ModelName
-  propsSchema: {
-    formSchema: ZodObjectOrWrapped
-    fieldConfig: FieldConfig<any> | undefined
-  }
+
   className?: string
 }
 
@@ -27,9 +21,8 @@ export default function CardContainer({
   children,
   id,
   model,
-  propsSchema,
 }: Props) {
-  const [isLoading, setIsLoading] = useState(false)
+  // const [isLoading, setIsLoading] = useState(false)
 
   return (
     <div
@@ -47,7 +40,6 @@ export default function CardContainer({
           }}
         />
         <MyFormModal
-          propsSchema={propsSchema}
           onSubmit={serverEdit}
           id={id}
           method="update"
