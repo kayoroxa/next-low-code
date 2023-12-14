@@ -14,9 +14,13 @@ datasource db {
 }
 
 generator zod {
-  provider         = "zod-prisma-types"
-  createInputTypes = false
+  provider = "node prisma-zod.mjs"
 }
+
+// generator zod {
+//   provider         = "zod-prisma-types"
+//   createInputTypes = false
+// }
 
 model User {
   id       Int        @id @default(autoincrement())
@@ -42,7 +46,7 @@ model Transaction {
   amount      Float     @default(0) /// @zod.number.min(1, {message: 'Amount must be greater than 1'})
   category    Category? @relation(fields: [categoryId], references: [id])
   categoryId  Int?
-  isIncome    Boolean   @default(false)
+  isIncome    Boolean?  @default(false)
 
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now()) @updatedAt

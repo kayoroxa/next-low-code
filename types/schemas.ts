@@ -1,11 +1,9 @@
 'use client'
 
+import { zSchemasForm } from '@/prisma/generated/zod'
 import { Prisma } from '@prisma/client'
-import * as schemas from '../prisma/generated/zod/index'
 
-const model = 'User'
-
-const modelNames = Object.keys(Prisma.ModelName)
+const modelNames = Object.keys(Prisma.ModelName) as Prisma.ModelName[]
 
 // export const modelsWithSchema = Object.fromEntries(
 //   modelNames.map(modelName => [
@@ -18,10 +16,24 @@ const propsSchemaFormModels = Object.fromEntries(
   modelNames.map(modelName => [
     modelName,
     {
-      formSchema: schemas[`${model}Schema`].omit({ id: true }),
+      formSchema: zSchemasForm[modelName],
       fieldConfig: {},
     },
   ])
 )
+// const propsSchemaFormModels = Object.fromEntries(
+//   modelNames.map(modelName => [
+//     modelName,
+//     {
+//       formSchema: schemas[`${modelName}Schema`].omit({
+//         id: true,
+//         dateUpdated: true,
+//       }),
+//       fieldConfig: {},
+//     },
+//   ])
+// )
+
+console.log(propsSchemaFormModels)
 
 export default propsSchemaFormModels
